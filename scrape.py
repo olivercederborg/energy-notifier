@@ -11,13 +11,13 @@ def main():
     soup = BeautifulSoup(html, features="html.parser")
     match = soup.find(name="canvas", attrs={"class": "hourly-price__chart-canvas"})
 
-    monitoredDinnerHours = [
+    monitored_dinner_hours = [
         "18:00",
         "19:00",
         "20:00",
         "21:00",
     ]
-    monitoredWashingHours = [
+    monitored_washing_hours = [
         "10:00",
         "11:00",
         "12:00",
@@ -36,40 +36,31 @@ def main():
     headings = match.get("data-headings").strip('"[]')
     prices = match.get("data-prices").strip('"[]')
 
-    dinnerHours = {}
-    washingHours = {}
+    dinner_hours = {}
+    washing_hours = {}
 
     for idx, heading in enumerate(headings.split(",")):
         heading = heading.strip('"')
         price = prices.split(",")[idx].strip('"')
 
-        if heading in monitoredDinnerHours:
-            dinnerHours[heading] = round(float(price), 2)
+        if heading in monitored_dinner_hours:
+            dinner_hours[heading] = round(float(price), 2)
 
-        if heading in monitoredWashingHours:
-            washingHours[heading] = round(float(price), 2)
+        if heading in monitored_washing_hours:
+            washing_hours[heading] = round(float(price), 2)
 
-    dinnerString = ""
-    for i, item in enumerate(sorted(dinnerHours.items(), key=lambda x: x[1])):
-        dinnerString += str(item[0]) + ": " + str(item[1]) + " Kr/kWh"
+    dinner_string = ""
+    for key, val in sorted(dinner_hours.items(), key=lambda x: x[1]):
+        dinner_string += f"{key}: {val} Kr/kWh\n"
 
-        if i != len(dinnerHours.items()) - 1:
-            dinnerString += "\n"
+    washing_string = ""
+    for key, val in sorted(washing_hours.items(), key=lambda x: x[1])[:5]:
+        washing_string += f"{key}: {val} Kr/kWh\n"
 
-    washingString = ""
-    for i, item in enumerate(sorted(washingHours.items(), key=lambda x: x[1])[:5]):
-        washingString += str(item[0]) + ": " + str(item[1]) + " Kr/kWh"
-
-        if i != len(washingHours.items()) - 1:
-            washingString += "\n"
-
-    return (
-        "Energy prices for "
-        + datetime.now().strftime("%d.%m.%Y")
-        + "\n\nBest times to cook dinner:\n"
-        + dinnerString
-        + "\n\nBest time to wash:\n"
-        + washingString
+    print(
+        f"Energy prices for {datetime.now().strftime('%d.%m.%Y')}\n\n"
+        + f"Best times to cook dinner:\n{dinner_string}\n"
+        + f"Best time to wash:\n{washing_string}"
     )
 
 
