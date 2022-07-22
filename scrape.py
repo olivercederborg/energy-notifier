@@ -57,7 +57,7 @@ def main():
     for key, val in sorted(washing_hours.items(), key=lambda x: x[1])[:5]:
         washing_string += f"{key}: {val} Kr/kWh\n"
 
-    print(
+    return (
         f"Energy prices for {datetime.now().strftime('%d.%m.%Y')}\n\n"
         + f"Best times to cook dinner:\n{dinner_string}\n"
         + f"Best time to wash:\n{washing_string}"
