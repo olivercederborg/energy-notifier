@@ -12,6 +12,7 @@ def main():
     match = soup.find(name="canvas", attrs={"class": "hourly-price__chart-canvas"})
 
     monitored_dinner_hours = [
+        "17:00",
         "18:00",
         "19:00",
         "20:00",
